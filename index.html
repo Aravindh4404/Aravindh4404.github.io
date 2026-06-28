@@ -30,7 +30,7 @@
       --fm:'JetBrains Mono',monospace;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth; scroll-padding-top: 72px;}
+    html{scroll-padding-top: 72px;}
     body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;line-height:1.7;overflow-x:hidden;overflow-anchor:none;}
     ::-webkit-scrollbar{width:5px;}
     ::-webkit-scrollbar-track{background:var(--bg);}
@@ -266,6 +266,24 @@
       .human-grid{grid-template-columns:1fr;}
     }
   </style>
+  <style>html{scroll-behavior:auto!important;}</style>
+  <script>
+  window.addEventListener('load',function(){
+    if(location.hash){
+      var el=document.querySelector(location.hash);
+      if(el){
+        document.querySelectorAll('.reveal').forEach(function(r){r.style.transition='none';r.classList.add('visible');});
+        setTimeout(function(){
+          el.scrollIntoView();
+          document.querySelector('html').style.scrollBehavior='';
+          document.querySelectorAll('.reveal').forEach(function(r){r.style.transition='';});
+        },50);
+      }
+    } else {
+      document.querySelector('html').style.scrollBehavior='';
+    }
+  });
+  </script>
 </head>
 <body>
 
