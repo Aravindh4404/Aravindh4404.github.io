@@ -727,9 +727,9 @@ function dispatch(raw){
   if(cmd==='whoami'||cmd==='about'||cmd==='about me'||cmd==='who are you')return'about';
   if(cmd==='skills'||cmd==='tech'||cmd==='stack')return'skills';
   if(cmd==='contact'||cmd==='hire me'||cmd==='email')return'contact';
-  if(cmd==='chess')return'chess';
-  if(cmd==='bird'||cmd==='birds'||cmd==='birding')return'bird';
-  if(cmd==='hiking'||cmd==='hike')return'hike';
+  if(cmd==='chess')return{type:'life',emoji:'♟',thing:'chess'};
+  if(cmd==='bird'||cmd==='birds'||cmd==='birding')return{type:'life',emoji:'🦅',thing:'bird watching'};
+  if(cmd==='hiking'||cmd==='hike')return{type:'life',emoji:'🏔️',thing:'hiking'};
   const sm=cmd.match(/^(show|cat|open|view|cd|get|load)\s+(.+)$/);
   if(sm)return{type:'show',proj:sm[2].trim()};
   for(const{k,p}of NLP){if(k.some(kw=>cmd.includes(kw)))return{type:'show',proj:p};}
@@ -781,23 +781,48 @@ async function respond(action){
       `  <span class="t-cyan">whoami</span>         about Aravindh`,
       `  <span class="t-cyan">skills</span>         tech stack`,
       `  <span class="t-cyan">contact</span>        get in touch`,
-      `  <span class="t-cyan">chess</span>          chess stats`,
-      `  <span class="t-cyan">bird</span>           the seagull story`,
       `  <span class="t-cyan">clear</span>          clear terminal`,
       ``,`  <span class="t-dim">Natural language works too — just describe what you're looking for.</span>`,
     ]);
     else if(action==='ls') await printLines([
-      `<span class="t-yellow">📁 ~/projects  (8 items)</span>`,``,
-      `  <span class="t-cyan">seagull-ai/</span>    <span class="t-dim">AI Research · Neural Nets · Publication</span>`,
-      `  <span class="t-cyan">falcon/</span>        <span class="t-dim">Quant Finance · Portfolio Optimization</span>`,
-      `  <span class="t-cyan">smart-fridge/</span>  <span class="t-dim">Computer Vision · Azure · Flutter</span>`,
-      `  <span class="t-cyan">electricity/</span>   <span class="t-dim">Energy · LSTM, CNN, MLP · Time Series</span>`,
-      `  <span class="t-cyan">market-regime/</span> <span class="t-dim">Quant Finance · Gaussian HMM</span>`,
-      `  <span class="t-cyan">sp500/</span>         <span class="t-dim">Data Engineering · SQL · XGBoost</span>`,
-      `  <span class="t-cyan">hedging/</span>       <span class="t-dim">Quant Finance · Black-Scholes · R</span>`,
-      `  <span class="t-cyan">ai-agents/</span>     <span class="t-dim">AI Agents · Context Management · Internship</span>`,
-      ``,`  <span class="t-dim">Type</span> <span class="t-cyan">show &lt;name&gt;</span> <span class="t-dim">to explore any project.</span>`,
-    ]);
+      `<span class="t-yellow">  ╔══════════════════════════════════════════════════╗</span>`,
+      `<span class="t-yellow">  ║</span>  <span class="t-cyan">📁 ~/projects</span>                       <span class="t-dim">8 items</span>  <span class="t-yellow">║</span>`,
+      `<span class="t-yellow">  ╚══════════════════════════════════════════════════╝</span>`,
+      ``,
+      `  <span class="t-prompt">🧠  seagull-ai/</span>`,
+      `  <span class="t-dim">│   AI Research · Neural Networks · Publication pending (Ibis)</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">PyTorch</span>  <span class="t-tag">ViT</span>  <span class="t-tag">GradCAM</span>  <span class="t-tag">Saliency Maps</span>`,
+      ``,
+      `  <span class="t-prompt">📈  falcon/</span>`,
+      `  <span class="t-dim">│   Quant Finance · Portfolio Optimization · 46.7% cumulative return</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">PyTorch</span>  <span class="t-tag">Transformers</span>  <span class="t-tag">Attention</span>  <span class="t-tag">Backtesting</span>`,
+      ``,
+      `  <span class="t-prompt">🧊  smart-fridge/</span>`,
+      `  <span class="t-dim">│   Computer Vision · Azure Cloud · Flutter App · Team Lead</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">Deep Learning</span>  <span class="t-tag">Azure REST API</span>  <span class="t-tag">Flutter</span>`,
+      ``,
+      `  <span class="t-prompt">⚡  electricity/</span>`,
+      `  <span class="t-dim">│   Energy Markets · 2-hr Spike Prediction · 48k AESO observations</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">LSTM</span>  <span class="t-tag">CNN</span>  <span class="t-tag">MLP</span>  <span class="t-tag">Time Series</span>`,
+      ``,
+      `  <span class="t-prompt">📊  market-regime/</span>`,
+      `  <span class="t-dim">│   Quant Finance · Gaussian HMM · Sharpe 1.02</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">Gaussian HMM</span>  <span class="t-tag">Forward Filtering</span>  <span class="t-tag">60yr Data</span>`,
+      ``,
+      `  <span class="t-prompt">💹  sp500/</span>`,
+      `  <span class="t-dim">│   Data Engineering · SQL · Bloomberg · XGBoost Forecasting</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">SQL</span>  <span class="t-tag">XGBoost</span>  <span class="t-tag">Bloomberg</span>  <span class="t-tag">ETL Pipeline</span>`,
+      ``,
+      `  <span class="t-prompt">🎲  hedging/</span>`,
+      `  <span class="t-dim">│   Risk Analysis · Black-Scholes · Greek-based Strategies</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">Black-Scholes</span>  <span class="t-tag">Delta</span>  <span class="t-tag">Vega</span>  <span class="t-tag">R</span>  <span class="t-tag">Options</span>`,
+      ``,
+      `  <span class="t-prompt">🤖  ai-agents/</span>`,
+      `  <span class="t-dim">│   AI Agents · Context Management · Kash Innovations Internship</span>`,
+      `  <span class="t-dim">└─</span>  <span class="t-tag">Claude Code</span>  <span class="t-tag">Context Mgmt</span>  <span class="t-tag">Token Opt</span>  <span class="t-tag">MCP</span>`,
+      ``,
+      `  <span class="t-dim">→ Type</span> <span class="t-cyan">show &lt;name&gt;</span> <span class="t-dim">to deep-dive any project.</span>`,
+    ],22);
     else if(action==='about') await printLines([
       `<span class="t-yellow">$ whoami</span>`,``,
       `  <span class="t-cyan">Aravindh Palaniguru</span>`,
@@ -810,11 +835,20 @@ async function respond(action){
       `  Hobbies: chess · bird-watching · hiking · ice-skating`,
     ]);
     else if(action==='skills') await printLines([
-      `<span class="t-yellow">$ cat skills.txt</span>`,``,
-      `  <span class="t-cyan">AI &amp; Agents</span>    Claude Code · AI Agents · Prompt Eng · MCP`,
-      `  <span class="t-cyan">ML</span>             PyTorch · Transformers · GradCAM · XGBoost · HMM`,
-      `  <span class="t-cyan">Data Science</span>   Python · R · SQL · ETL · Bloomberg Terminal`,
-      `  <span class="t-cyan">Cloud &amp; Dev</span>    Azure · REST APIs · Docker · ReactJS · Flutter`,
+      `<span class="t-dim">┌─</span> <span class="t-cyan">🤖  AI &amp; Agents</span>`,
+      `<span class="t-dim">│</span>  <span class="t-cyan">[Claude Code]</span>  <span class="t-cyan">[AI Agents]</span>  <span class="t-cyan">[Agentic Workflows]</span>`,
+      `<span class="t-dim">│</span>  <span class="t-cyan">[Prompt Engineering]</span>  <span class="t-cyan">[MCP / Plugins]</span>  <span class="t-cyan">[Context Management]</span>`,
+      ``,
+      `<span class="t-dim">┌─</span> <span class="t-purple">🧠  Machine Learning</span>`,
+      `<span class="t-dim">│</span>  <span class="t-purple">[PyTorch]</span>  <span class="t-purple">[Scikit-learn]</span>  <span class="t-purple">[Deep Learning]</span>  <span class="t-purple">[Transformers]</span>`,
+      `<span class="t-dim">│</span>  <span class="t-purple">[Computer Vision]</span>  <span class="t-purple">[Time Series]</span>  <span class="t-purple">[Model Interpretability]</span>`,
+      ``,
+      `<span class="t-dim">┌─</span> <span class="t-yellow">📊  Data Science</span>`,
+      `<span class="t-dim">│</span>  <span class="t-yellow">[Python]</span>  <span class="t-yellow">[R]</span>  <span class="t-yellow">[SQL]</span>  <span class="t-yellow">[ETL Pipelines]</span>  <span class="t-yellow">[Data Modeling]</span>`,
+      `<span class="t-dim">│</span>  <span class="t-yellow">[Statistical Modeling]</span>  <span class="t-yellow">[Bloomberg Terminal]</span>`,
+      ``,
+      `<span class="t-dim">┌─</span> <span class="t-green">☁️  Cloud &amp; Dev</span>`,
+      `<span class="t-dim">│</span>  <span class="t-green">[MS Azure]</span>  <span class="t-green">[REST APIs]</span>  <span class="t-green">[Docker]</span>  <span class="t-green">[ReactJS]</span>  <span class="t-green">[Git / GitHub]</span>`,
     ]);
     else if(action==='contact') await printLines([
       `<span class="t-yellow">$ cat contact.txt</span>`,``,
@@ -823,27 +857,11 @@ async function respond(action){
       `  <span class="t-cyan">phone</span>     +1 825 454 3342`,
       `  <span class="t-cyan">site</span>      aravindh4404.github.io`,
     ]);
-    else if(action==='chess') await printLines([
-      `<span class="t-yellow">♟  Chess</span>`,``,
-      `  Rating:  ~1700 on chess.com`,
-      `  Style:   positional — long-term patterns over tactics`,
-      `  Theory:  chess is basically why I got into AI.`,
-      `           Both are about finding structure in complexity.`,
-    ]);
-    else if(action==='bird') await printLines([
-      `<span class="t-yellow">🦅 Bird watching</span>`,``,
-      `  Started:  casual hobby while hiking`,
-      `  Trigger:  couldn't tell a herring gull from a lesser black-backed`,
-      `  Response: built a deep learning classifier for my final year project`,
-      `  Status:   paper under review at Ibis (ornithology journal)`,``,
-      `  <span class="t-dim">Curiosity has a habit of becoming research.</span>`,
-    ]);
-    else if(action==='hike') await printLines([
-      `<span class="t-yellow">🏔️  Hiking</span>`,``,
-      `  Location:  Canadian Rockies — an hour from Calgary`,
-      `  Function:  the only thing that reliably clears model-debug fog`,
-    ]);
   }
+  else if(action.type==='life') await printLines([
+    `<span class="t-purple">${action.emoji}  ${action.thing}?</span>  that side of me lives at <span class="t-cyan">~/life</span>`,``,
+    `  <span class="t-dim">↓ scroll down to meet the human — this terminal only runs projects.</span>`,
+  ]);
   else if(action.type==='show'){
     const p=findProj(action.proj);
     if(!p) await printLines([
