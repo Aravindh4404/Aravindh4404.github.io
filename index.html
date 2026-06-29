@@ -913,7 +913,7 @@ async function boot(){
   inp.focus();
 }
 
-const to=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&!booted)boot();},{threshold:.3});
+const to=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&!booted){booted=true;setTimeout(boot,0);}},{threshold:.05});
 to.observe(document.getElementById('termOutput'));
 
 inp.addEventListener('keydown',async e=>{
